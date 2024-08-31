@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\ProfileController; 
+use Illuminate\Support\Facades\Route; 
+
+use App\Http\Controllers\HomeController; 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,3 +18,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
+
+Route::get('post', 'HomeController@post'); 
