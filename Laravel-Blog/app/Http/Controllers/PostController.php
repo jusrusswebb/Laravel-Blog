@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Comment;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with(['user', 'comments.user'])->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -36,6 +37,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+        $post->load('comments.user');
         return view('posts.show', compact('post'));
     }
 
@@ -71,5 +73,20 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+    }
+
+    public function storeComment(Request $request, $postId)
+    {
+        $request->validate([
+            'content' => 'required|string|max:255',
+        ]);
+
+        Comment::create([
+            'post_id' => $postId,
+            'user_id' => auth()->id(),
+            'content' => $request->content,
+        ]);
+
+        return redirect()->route('posts.index');
     }
 }

@@ -25,5 +25,10 @@ Route::resource('posts', 'PostController');
 
 Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
 
-//Route::get('post', 'HomeController@post'); 
+Route::post('posts/{post}/comments', 'PostController@storeComment')->middleware('auth')->name('posts.storeComment');
+
+
+
+
+
 
