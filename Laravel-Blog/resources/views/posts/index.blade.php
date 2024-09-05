@@ -19,7 +19,7 @@
 
         <!-- Comment Form -->
         @auth
-            <form action="{{ route('posts.storeComment', $post) }}" method="POST">
+            <form action="{{ route('comments.storeComment', $post->id) }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <textarea name="content" class="form-control" rows="2" placeholder="Add a comment..."></textarea>
