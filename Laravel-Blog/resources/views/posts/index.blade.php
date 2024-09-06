@@ -1,45 +1,33 @@
-<!-- List of Posts -->
-<h1>Posts</h1>
-<a href="{{ route('posts.create') }}">Create New Post</a>
-@foreach ($posts as $post)
-    <div class="post">
-        <h2>{{ $post->title }}</h2>
-        <p>{{ $post->content }}</p>
-        <p>Posted by: {{ $post->user->name }}</p> 
+@extends('layouts.app')
 
-           <!-- Display comments -->
-        <div class="comments">
-            <h4>Comments:</h4>
-            @foreach ($post->comments as $comment)
-                <div class="comment">
-                    <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
-                </div>
-            @endforeach
+@section('content')
+<div class="container">
+    @auth
+        <a href="{{ route('posts.create') }}" class="btn btn-outline-dark mb-3" style="font-family: 'Lora', serif;">Create New Post</a>
+    @else
+        <a href="{{ route('login') }}" class="btn btn-outline-dark mb-3" style="font-family: 'Lora', serif;">Create New Post</a>
+    @endauth
+
+    @foreach ($posts as $post)
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title mb-3" style="font-family: 'Lora', serif;"><a href="{{ route('posts.show', $post->id) }}" class="text-dark text-decoration-none">{{ $post->title }}</a></h2>
+                
+                <p class="text-muted mb-3" style="font-family: 'Lora', serif;">- {{ $post->user->name }}</p>
+                
+                @if (Auth::check() && Auth::id() === $post->user_id)
+                    <div class="d-flex">
+                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-outline-dark btn-sm me-2">Edit</a>
+                    </div>
+                @endif
+            </div>
         </div>
+    @endforeach
+</div>
+@endsection
 
-        <!-- Comment Form -->
-        @auth
-            <form action="{{ route('comments.storeComment', $post->id) }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <textarea name="content" class="form-control" rows="2" placeholder="Add a comment..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Comment</button>
-            </form>
-        @else
-            <p>Please <a href="{{ route('login') }}">log in</a> to comment.</p>
-        @endauth
-        
-        @if (Auth::check() && Auth::id() === $post->user_id)
-            <!-- Show edit and delete buttons only if the current user is the owner of the post -->
-            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">Edit</a>
 
-            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-        @endif
-    </div>
-@endforeach
+
+
+
 
