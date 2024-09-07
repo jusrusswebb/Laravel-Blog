@@ -23,14 +23,12 @@ Auth::routes();
 
 Route::resource('posts', 'PostController');
 
-Route::get('/home', 'HomeController@index')->middleware('auth')->name('home');
+Route::middleware(['auth'])->group(function () {
 
-Route::post('posts/{post}/comments', 'CommentController@storeComment')->middleware('auth')->name('comments.storeComment');
+    Route::get('/home', 'HomeController@index')->name('home');
 
-Route::delete('comments/{comment}', 'CommentController@destroy')->middleware('auth')->name('comments.destroy');
+    Route::post('posts/{post}/comments', 'CommentController@storeComment')->name('comments.storeComment');
 
+    Route::delete('comments/{comment}', 'CommentController@destroy')->name('comments.destroy');
 
-
-
-
-
+});

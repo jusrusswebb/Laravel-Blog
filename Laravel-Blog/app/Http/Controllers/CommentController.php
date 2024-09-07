@@ -10,7 +10,7 @@ class CommentController extends Controller
 {
     public function storeComment(Request $request, $postId)
     {
-        $request->validate([
+        $requˇest->validate([
             'content' => 'required|string|max:255',
         ]);
 

@@ -5,7 +5,7 @@
     <div class="card mb-4 border-0 shadow-sm">
         <div class="card-body">
             <h1 class="card-title mb-3" style="font-family: 'Lora', serif;">{{ $post->title }}</h1>
-            <p class="card-text mb-3">{{ $post->content }}</p>
+            <p class="card-text mb-3" >{{ $post->content }}</p>
             <p class="text-muted mb-4">Posted by: {{ $post->user->name }}</p>
         </div>
     </div>
