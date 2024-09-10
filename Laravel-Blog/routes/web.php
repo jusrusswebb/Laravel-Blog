@@ -17,9 +17,6 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('dashboard');
-    }
     return redirect()->route('posts.index');
 });
 
