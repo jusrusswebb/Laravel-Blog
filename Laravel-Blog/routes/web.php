@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route; 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController; 
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +17,9 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
     return redirect()->route('posts.index');
 });
 
@@ -28,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::post('posts/{post}/comments', 'CommentController@storeComment')->name('comments.storeComment');
+
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
     Route::delete('comments/{comment}', 'CommentController@destroy')->name('comments.destroy');
 
