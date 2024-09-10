@@ -20,6 +20,17 @@
                     <textarea name="content" id="content" class="form-control" rows="5">{{ $post->content }}</textarea>
                 </div>
 
+                <div class="mb-3">
+                    <label for="image" class="form-label" style="font-family: 'Lora', serif;">Image:</label>
+                    <input type="file" name="image" id="image" class="form-control" style="font-family: 'Lora', serif;">
+                    
+                    @if ($post->image)
+                        <div class="mt-3">
+                            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="img-fluid">
+                        </div>
+                    @endif
+                </div>
+
                 <button type="submit" class="btn btn-outline-dark">Update</button>
             </form>
 

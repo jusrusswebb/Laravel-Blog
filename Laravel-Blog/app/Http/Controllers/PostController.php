@@ -24,12 +24,19 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public'); 
+        }
 
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
             'user_id' => auth()->id(),
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
@@ -58,9 +65,23 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $post->update($request->all());
+        $imagePath = $post->image;
+        if ($request->hasFile('image')) {
+            if ($imagePath && \Storage::exists('public/' . $imagePath)) {
+                \Storage::delete('public/' . $imagePath);
+            }
+            
+            $imagePath = $request->file('image')->store('images', 'public');
+        }
+
+        $post->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'image' => $imagePath, 
+        ]);
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
@@ -69,6 +90,9 @@ class PostController extends Controller
     {
         if (auth()->id() !== $post->user_id) {
             return redirect()->route('posts.index')->with('error', 'Unauthorized access');
+        }
+        if ($post->image && \Storage::exists('public/' . $post->image)) {
+            \Storage::delete('public/' . $post->image);
         }
         $post->delete();
 
