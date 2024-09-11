@@ -28,7 +28,7 @@
                             <a href="{{ route('posts.show', $post->id) }}" class="text-dark text-decoration-none">{{ $post->title }}</a>
                         </h2>
                         <p class="card-text" style="font-family: 'Lora', serif;">
-                            {{ Str::limit($post->content, 150) }} <!-- Show a preview of the content -->
+                            {{ Str::limit($post->content, 150) }} 
                         </p>
                     </div>
 
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="mt-2">
-                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-outline-dark btn-sm me-2" style="font-family: 'Lora', serif;">Edit</a>
+                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-outline-dark btn-sm mr-1" style="font-family: 'Lora', serif;">Edit</a>
                     <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
