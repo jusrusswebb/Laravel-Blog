@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController; 
 use App\Http\Controllers\DashboardController;
+
+use App\Post; 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +20,8 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('posts.index');
+    $posts = \App\Post::latest()->get();
+    return view('welcome', compact('posts'));
 });
 
 Auth::routes();

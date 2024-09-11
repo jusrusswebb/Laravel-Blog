@@ -4,7 +4,6 @@
 <div class="container">
     @auth
         <a href="{{ route('posts.create') }}" class="btn btn-outline-dark mb-3" style="font-family: 'Lora', serif;">Create New Post</a>
-        <a href="{{ route('dashboard') }}" class="btn btn-outline-dark mb-3" style="font-family: 'Lora', serif;">View Dashboard</a>
     @else
         <a href="{{ route('login') }}" class="btn btn-outline-dark mb-3" style="font-family: 'Lora', serif;">Create New Post</a>
     @endauth

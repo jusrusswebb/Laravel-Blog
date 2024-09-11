@@ -83,7 +83,7 @@ class PostController extends Controller
             'image' => $imagePath, 
         ]);
 
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('dashboard')->with('success', 'Post updated successfully.');
     }
 
     public function destroy(Post $post)
