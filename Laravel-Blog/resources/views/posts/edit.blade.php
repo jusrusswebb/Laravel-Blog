@@ -6,7 +6,7 @@
 
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
-            <form action="{{ route('posts.update', $post->id) }}" method="POST">
+            <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 
@@ -22,13 +22,13 @@
 
                 <div class="mb-3">
                     <label for="image" class="form-label" style="font-family: 'Lora', serif;">Image:</label>
-                    <input type="file" name="image" id="image" class="form-control" style="font-family: 'Lora', serif;">
+                    <input type="file" name="image" id="image" class="form-control" style="font-family: 'Lora', serif;" onchange="previewImage()">
                     
-                    @if ($post->image)
-                        <div class="mt-3">
-                            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="img-fluid">
-                        </div>
-                    @endif
+                    <div id="imagePreview" class="mt-3">
+                        @if ($post->image)
+                            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" class="img-fluid" id="currentImagePreview">
+                        @endif
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-outline-dark">Update</button>
@@ -42,5 +42,26 @@
         </div>
     </div>
 </div>
+<script>
+function previewImage() {
+    const file = document.getElementById('image').files[0];
+    const preview = document.getElementById('imagePreview');
+    const reader = new FileReader();
+
+    reader.onloadend = function () {
+        preview.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = reader.result;
+        img.classList.add('img-fluid');
+        preview.appendChild(img);
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.innerHTML = '';
+    }
+}
+</script>
 @endsection
 
